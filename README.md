@@ -1,6 +1,10 @@
 # Crud
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.5.
+Demo : <a href="https://shawon100.github.io/angularcrud/">Angular CRUD</a>
+
+## Install
+run npm install to install all node modules
 
 ## Development server
 
