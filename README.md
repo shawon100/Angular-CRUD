@@ -3,6 +3,9 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.5.<br>
 Demo : <a href="https://shawon100.github.io/angularcrud/">Angular CRUD</a>
 
+## Set Your API from Firebase
+Give your API credentials on environment.ts and environment.prod.ts
+
 ## Install
 run npm install to install all node modules
 
