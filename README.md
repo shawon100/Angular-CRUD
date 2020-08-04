@@ -9,6 +9,14 @@ Give your API credentials on environment.ts and environment.prod.ts
 ## Install
 run npm install to install all node modules
 
+## Docker
+```
+docker build -t angularcrud .
+```
+## Docker Run
+```
+docker run -p 80:80 --name angularapp angularcrud
+```
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
