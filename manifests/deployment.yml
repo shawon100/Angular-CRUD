@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webclient-angular-crud
+spec:
+  selector:
+    matchLabels:
+      app: webclient-angular-crud
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webclient-angular-crud
+    spec:
+      containers:
+        - name: webclient-angular-crud
+          image: shawon10/webclient-angular-crud:85
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
