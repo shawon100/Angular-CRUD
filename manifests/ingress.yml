@@ -8,7 +8,6 @@ metadata:
       more_set_headers "X-Xss-Protection: 1; mode=block";
       more_set_headers "X-Content-Type-Options: nosniff";
   name: webclient-angular-crud-ingress
-  namespace: ingress-nginx
 spec:
   rules:
     - host: demo.angularcrud.com
