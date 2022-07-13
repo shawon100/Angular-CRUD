@@ -1,0 +1,69 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'docker-aks-serviceconnection'
+  containerRegistry: docker-aks-serviceconnection
+  imageRepository: 'shawon10/webclient-angular-crud'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildNumber)'
+
+resources:
+- repo: self
+
+stages:
+  - stage: Build
+    displayName: Build Image (Docker)
+    jobs:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: Docker@2
+        displayName: Login to Docker Hub
+        inputs:
+          command: login
+          repository: $(imageRepository)
+          containerRegistry: $(containerRegistry)
+          
+      - task: Docker@2
+        displayName: Build an image and push to docker hub
+        inputs:
+          command: buildAndPush
+          repository: $(imageRepository)
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
+
+            
+  - stage: Deploy
+    displayName: Deploy to Kubernetes
+    dependsOn: Build
+
+    jobs:
+    - job: Deployment
+      displayName: Deploy
+      pool: 
+        vmImage: ubuntu-latest
+      steps:
+        - task: KubernetesManifest@0
+          displayName: Deploy to Kubernetes cluster
+          inputs:
+            kubernetesServiceConnection: aks-serviceconnection
+            action: deploy
+            manifests: |
+              ./manifests/deployment.yml
+              ./manifests/service.yml
+              ./manifests/ingress.yml
+            containers: |
+              $(imageRepository):$(tag)
+            
+
+          
