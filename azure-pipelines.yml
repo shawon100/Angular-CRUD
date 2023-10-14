@@ -4,11 +4,12 @@
 
 trigger:
 - master
+- uat
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'docker-aks-serviceconnection'
-  containerRegistry: docker-aks-serviceconnection
+  dockerRegistryServiceConnection: 'dockerRegConnection'
+  containerRegistry: dockerRegConnection
   imageRepository: 'shawon10/webclient-angular-crud'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildNumber)'
@@ -43,27 +44,27 @@ stages:
             $(tag)
 
             
-  - stage: Deploy
-    displayName: Deploy to Kubernetes
-    dependsOn: Build
+  # - stage: Deploy
+  #   displayName: Deploy to Kubernetes
+  #   dependsOn: Build
 
-    jobs:
-    - job: Deployment
-      displayName: Deploy
-      pool: 
-        vmImage: ubuntu-latest
-      steps:
-        - task: KubernetesManifest@0
-          displayName: Deploy to Kubernetes cluster
-          inputs:
-            kubernetesServiceConnection: aks-serviceconnection
-            action: deploy
-            manifests: |
-              ./manifests/deployment.yml
-              ./manifests/service.yml
-              ./manifests/ingress.yml
-            containers: |
-              $(imageRepository):$(tag)
+  #   jobs:
+  #   - job: Deployment
+  #     displayName: Deploy
+  #     pool: 
+  #       vmImage: ubuntu-latest
+  #     steps:
+  #       - task: KubernetesManifest@0
+  #         displayName: Deploy to Kubernetes cluster
+  #         inputs:
+  #           kubernetesServiceConnection: aks-serviceconnection
+  #           action: deploy
+  #           manifests: |
+  #             ./manifests/deployment.yml
+  #             ./manifests/service.yml
+  #             ./manifests/ingress.yml
+  #           containers: |
+  #             $(imageRepository):$(tag)
             
 
           
