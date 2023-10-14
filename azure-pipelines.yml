@@ -43,7 +43,6 @@ stages:
           tags: |
             $(tag)
 
-            
   # - stage: Deploy
   #   displayName: Deploy to Kubernetes
   #   dependsOn: Build
