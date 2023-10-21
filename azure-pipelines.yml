@@ -13,6 +13,10 @@ variables:
   imageRepository: 'shawon10/webclient-angular-crud'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildNumber)'
+  vmUser: 'ubuntu'  # Replace with your VM's username
+  vmHost: '20.106.227.129'       # Replace with your VM's IP address
+  #vmKey: $(sshPrivateKey)  # Assuming you've saved your private key in Azure Pipeline's secret variables
+  targetPath: '/tmp'
 
 resources:
 - repo: self
@@ -42,6 +46,21 @@ stages:
           containerRegistry: $(dockerRegistryServiceConnection)
           tags: |
             $(tag)
+
+  - stage: Deploy
+    displayName: Deploy to VM
+    dependsOn: Build
+    jobs:
+    - job: Deployment
+      displayName: Deploy
+      pool: 
+        vmImage: ubuntu-latest
+      steps:
+      - script: |
+         sed -i 's/$DOCKER_REGISTRY/$(imageRepository)/g' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
+         sed -i 's/${TAG}/$(tag)/g' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
+         scp -o StrictHostKeyChecking=no  $(Build.SourcesDirectory)/docker-compose.yml $(vmUser)@$(vmHost):/tmp
+         ssh -o StrictHostKeyChecking=no $(vmUser)@$(vmHost) "cd $(targetPath) && docker-compose up -d"
 
   # - stage: Deploy
   #   displayName: Deploy to Kubernetes
