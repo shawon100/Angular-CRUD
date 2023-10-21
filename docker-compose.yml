@@ -2,6 +2,6 @@ version: "2"
 services:
   app:
     image: DOCKER_REGISTRY:TAG
-    container_name: python-flask-cicd
+    container_name: angular-crud
     ports:
-      - "80:4200"
+      - "5000:80"
