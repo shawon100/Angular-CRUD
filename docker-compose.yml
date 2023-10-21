@@ -1,7 +1,7 @@
 version: "2"
 services:
   app:
-    image: $DOCKER_REGISTRY:${TAG}
+    image: $DOCKER_REGISTRY:$TAG
     container_name: python-flask-cicd
     ports:
       - "80:5000"
