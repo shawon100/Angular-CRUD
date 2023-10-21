@@ -58,8 +58,8 @@ stages:
       steps:
       - script: |
          sudo apt install -y sshpass
-         sed -i -e 's|DOCKER_REGISTRY|'"$IMAGE_NAME"'|' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
-         sed -i -e 's|TAG|'"$IMAGE_TAG"'|' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
+         sed -i -e 's|DOCKER_REGISTRY|'"$imageRepository"'|' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
+         sed -i -e 's|TAG|'"$tag"'|' $(Build.SourcesDirectory)/docker-compose.yml  # Replace path with your actual path
          sshpass -p "@Cloudageskill" scp -o StrictHostKeyChecking=no  $(Build.SourcesDirectory)/docker-compose.yml $(vmUser)@$(vmHost):/tmp
          sshpass -p "@Cloudageskill" ssh -o StrictHostKeyChecking=no  $(vmUser)@$(vmHost) "cd $(targetPath) && docker-compose up -d"
 
