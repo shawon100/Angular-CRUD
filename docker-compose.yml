@@ -4,4 +4,4 @@ services:
     image: DOCKER_REGISTRY:TAG
     container_name: python-flask-cicd
     ports:
-      - "80:5000"
+      - "80:4200"
