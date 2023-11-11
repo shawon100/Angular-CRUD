@@ -4,4 +4,4 @@ services:
     image: DOCKER_REGISTRY:TAG
     container_name: angular-crud
     ports:
-      - "5000:80"
+      - "80:80"
